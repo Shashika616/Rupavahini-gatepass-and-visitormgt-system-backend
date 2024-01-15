@@ -20,3 +20,5 @@ const staffcomplaintSchema = new Schema({
         required: true,
     },
 });
+
+module.exports = mongoose.model('Staffcomplaint', staffcomplaintSchema);
