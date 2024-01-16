@@ -56,7 +56,7 @@ const userRegister = async(req,res)=>{
         const contactNoFormat = /^\d{10}$/;
         if(!contactNoFormat.test(contactNo)){
             console.log("Invalid format for a mobile Number");
-            return res.json({error: 'Enter Invalid Mobile Number'});
+            return res.json({error: ' Invalid Mobile Number'});
         }
         
             // encrypt password
