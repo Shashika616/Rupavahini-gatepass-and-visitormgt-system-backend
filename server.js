@@ -13,6 +13,11 @@ const cors = require("cors");
 
 app.use(express.json());
 app.use(cors());
+app.use(Routes);
+app.use(Routes2);
+app.use(Routes3);
+app.use(Routes4);
+
 /* 
     app.use(
         cors({
