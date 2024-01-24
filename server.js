@@ -11,6 +11,8 @@ const cors = require("cors");
 
 app.use(express.json());
 app.use(cors());
+app.use(routes5);
+app.use(routes6);
 /* 
     app.use(
         cors({
