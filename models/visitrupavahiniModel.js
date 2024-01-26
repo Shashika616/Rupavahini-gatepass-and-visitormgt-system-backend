@@ -2,63 +2,74 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const visitrupavahiniSchema = new Schema({
-   category: {
+    requestID: {
+        type: String,
+        //required: true,  
+         },
+   
+    category: {
     type: String,
-    required: true,   },
+    //required: true,  
+     },
+
+    username: {
+        type: String,
+        //required: true,  
+         },
 
     dateofArrival:{
      type: Date,
-     required: true,
+     //required: true,
     },
-    timeSlot:{
+    timeslot:{
      type: String,
-     required: true,
+     //required: true,
     },
     name:{
      type: String,
-     required: true,
+    // required: true,
     },
-    garde:{
+    grade:{
         type: String,
        
         },
     address:{
         type: String,
-        required: true,
+        //required: true,
     },
 
     authorizedPerson:{
         type: String,
-        required: true,
+        //required: true,
     },
 
     designation:{
         type: String,
-        required: true,
+        //required: true,
     },
 
     phoneNo:{
         type: [String],
-        required: true,
+        //required: true,
     },
 
     noOfmale:{
         type: Number,
-        required: true,
+        //required: true,
     },
     noOffemale:{
         type: Number,
-        required: true,
+        //required: true,
     },
 
     noOfteachers:{
         type: Number,
-        required: true,
+       // required: true,
     },
 
     noOfparents:{
         type: Number,
-        required: true,
+       // required: true,
     },
 
     note:{
