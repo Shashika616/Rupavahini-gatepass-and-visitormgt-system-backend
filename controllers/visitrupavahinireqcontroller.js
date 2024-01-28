@@ -1,11 +1,12 @@
 const Visitrupavahini = require("../models/visitrupavahiniModel");
 
 const createvisitrupavahinirequest = async (req, res) => {
+    const username = req.params.username;
     const {category, name, dateofArrival, timeslot} = req.body;
     // Create a unique ID to identify the request in seperate forms and update the relevant fields
     const requestID = `${category}-${name}-${dateofArrival}-${timeslot}`;  
   const {
-    username,
+   // username,
     grade,
     address,
     authorizedPerson,
@@ -157,7 +158,7 @@ const getRequestByUsername = async (req, res) => {
 const deleteRequest = async (req, res) => {
   try {
     const requestId = req.params.id;
-    const deletedRequest = await Request.findByIdAndDelete(requestId);
+    const deletedRequest = await Visitrupavahini.findByIdAndDelete(requestId);
 
     if (!deletedRequest) {
       return res
