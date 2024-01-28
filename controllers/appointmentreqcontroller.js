@@ -1,8 +1,8 @@
 const Appointment = require("../models/appoinmentModel");
 
 const createappointmentrequest = async (req, res) => {
+  const username = req.params.username;
   const {
-    username,
     requesterName,
     requesteremail,
     requesterNIC,
@@ -77,7 +77,7 @@ c/*onst getAppRequestByUsername = async (req, res) => {
   const deleteAppRequest = async (req, res) => {
     try {
       const requestId = req.params.id;
-      const deletedRequest = await Request.findByIdAndDelete(requestId);
+      const deletedRequest = await Appointment.findByIdAndDelete(requestId);
   
       if (!deletedRequest) {
         return res
