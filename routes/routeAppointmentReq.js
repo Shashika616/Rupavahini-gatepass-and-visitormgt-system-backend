@@ -5,10 +5,10 @@ const {
     createappointmentrequest,
     getAppRequestByUsername,
     deleteAppRequest,
-    } = require("../controllers/appointmentreqcontroller");
+} = require("../controllers/appointmentreqcontroller");
 
-    router.post("/",createappointmentrequest);
-    router.get("/:username",getAppRequestByUsername);
-    router.delete("/:id",deleteAppRequest);
+router.post("/", createappointmentrequest);
+router.get("/:username", getAppRequestByUsername);
+router.delete("/:id", deleteAppRequest);
 
-    module.exports = router;
+module.exports = router;
