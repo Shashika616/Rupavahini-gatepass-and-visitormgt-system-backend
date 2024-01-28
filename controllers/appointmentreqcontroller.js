@@ -33,7 +33,7 @@ const createappointmentrequest = async (req, res) => {
   }
 };
 
-const getAppRequestByUsername = async (req, res) => {
+c/*onst getAppRequestByUsername = async (req, res) => {
     const username = req.params.username;
   
     try {
@@ -51,7 +51,28 @@ const getAppRequestByUsername = async (req, res) => {
       console.error("Error retrieving request by username", error);
       res.status(500).json({ error: "Could not retrieve request by username" });
     }
+  }; */
+
+  const getAppRequestByUsername = async (req, res) => {
+    const username = req.params.username;
+  
+    try {
+      const requests = await Appointment.find({ username: username });
+  
+      if (!requests || requests.length === 0) {
+        return res
+          .status(404)
+          .json({ message: "No requests found for the username", username: username });
+      }
+  
+      res.status(200).json(requests);
+  
+    } catch (error) {
+      console.error("Error retrieving requests by username", error);
+      res.status(500).json({ error: "Could not retrieve requests by username" });
+    }
   };
+  
 
   const deleteAppRequest = async (req, res) => {
     try {
