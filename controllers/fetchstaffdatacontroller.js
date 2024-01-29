@@ -65,5 +65,26 @@ const StaffData = async (req, res) => {
     }
 };
 */
+
+const GetStaffData = async (req, res) => {
+  const empID = req.params.empID;  // Assuming empID is passed as a route parameter
+
+  try {
+      const staffData = await Userstaff.findOne({ empID });
+
+      if (staffData) {
+          res.json({ status: "ok", data: staffData });
+      } else {
+          res.status(404).json({ status: "error", data: "User not found" });
+      }
+  } catch (error) {
+      console.error("Error fetching user data:", error);
+      res.status(500).json({ status: "error", data: "Internal Server Error" });
+  }
+};
+
   
-  module.exports = StaffData;
+  module.exports = {
+    StaffData,
+    GetStaffData,
+  };
