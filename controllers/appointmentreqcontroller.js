@@ -5,7 +5,7 @@ const createappointmentrequest = async (req, res) => {
   const {
     requesterName,
     requesteremail,
-    requesterNIC,
+    requesterNIC, 
     requesterPhoneno,
     officerName,
     appoinmentDate,
