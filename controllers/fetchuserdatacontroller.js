@@ -9,7 +9,7 @@ const NODEMAILER_USER = process.env.NODEMAILER_USER;
 const NODEMAILER_PASSWORD = process.env.NODEMAILER_PASSWORD;
 const RECEIVER_EMAIL = process.env.RECEIVER_EMAIL;
 
-const UserData = async (req, res) => {
+const UsersData = async (req, res) => {
     const { token } = req.body;
   
     try {
@@ -66,6 +66,26 @@ const UserData = async (req, res) => {
 };
 
 */
+
+const GetUsersData = async (req, res) => {
+  const empID = req.params.username;  // Assuming username is passed as a route parameter
+
+  try {
+      const userData = await User.findOne({ username });
+
+      if (userData) {
+          res.json({ status: "ok", data: userData });
+      } else {
+          res.status(404).json({ status: "error", data: "User not found" });
+      }
+  } catch (error) {
+      console.error("Error fetching user data:", error);
+      res.status(500).json({ status: "error", data: "Internal Server Error" });
+  }
+};
   
-  module.exports = UserData;
+  module.exports = {
+    UsersData,
+    GetUsersData,
+  };
   
