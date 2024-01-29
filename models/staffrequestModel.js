@@ -4,8 +4,7 @@ const Schema = mongoose.Schema;
 const staffrequestSchema = new Schema({
     empId:{
         type: String,
-        required: true,
-        
+        required: true,    
     },
     reason:{
         type: String,
