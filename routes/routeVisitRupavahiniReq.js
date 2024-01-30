@@ -9,10 +9,10 @@ const {
     getRequestByUsername,
     } = require("../controllers/visitrupavahinireqcontroller");
 
-    router.post("/:username", createvisitrupavahinirequest);
-    router.put("/:requestID", updatevisitrupavhini);
-    router.get("/details/:requestID", getVisitrupavahiniDetails); // Changed the path to avoid conflict
+    router.post("/createvisitrupreq/:username", createvisitrupavahinirequest);
+    router.put("/updatevisitrupreq/:id", updatevisitrupavhini);
+    router.get("/detailsvisitrupreq/:id", getVisitrupavahiniDetails); // Changed the path to avoid conflict
     router.get("/user/:username", getRequestByUsername); // Changed the path to avoid conflict
-    router.delete("/:id", deleteRequest);
+    router.delete("/deleterupreq/:id", deleteRequest);
 
     module.exports = router;
