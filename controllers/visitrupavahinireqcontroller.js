@@ -2,11 +2,11 @@ const Visitrupavahini = require("../models/visitrupavahiniModel");
 
 const createvisitrupavahinirequest = async (req, res) => {
     const username = req.params.username;
-    const {category, name, dateofArrival, timeslot} = req.body;
+    const {category, dateofArrival, timeslot} = req.body;
     // Create a unique ID to identify the request in seperate forms and update the relevant fields
-    const requestID = `${category}-${name}-${dateofArrival}-${timeslot}`;  
+    const requestID = `${category}-${username}-${dateofArrival}-${timeslot}`;  
   const {
-   // username,
+    name,
     grade,
     address,
     authorizedPerson,
@@ -47,8 +47,9 @@ const createvisitrupavahinirequest = async (req, res) => {
 };
 
 const updatevisitrupavhini = async (req, res) => {
-    const requestID = req.params.requestID;
+    const requestID = req.params.id;
     const {
+        name,
         grade,
         address,
         authorizedPerson,
@@ -57,15 +58,15 @@ const updatevisitrupavhini = async (req, res) => {
         noOfmale,
         noOffemale,  
         noOfteachers,
-        noOfparents,
-        note, 
+        noOfparents, 
     } = req.body;
   
     try {
       const updatevisitrupavhinirequest = await Visitrupavahini.findOneAndUpdate(
-        { requestID: requestID },
+        { _id : requestID },
         {
           $set: {
+            name,
             grade,
             address,
             authorizedPerson,
@@ -74,8 +75,7 @@ const updatevisitrupavhini = async (req, res) => {
             noOfmale,
             noOffemale,  
             noOfteachers,
-            noOfparents,
-            note, 
+            noOfparents, 
           },
         },
         { new: true }
@@ -95,20 +95,23 @@ const updatevisitrupavhini = async (req, res) => {
   };
 
 // Method to retrieve visit request details by requestID
-const getVisitrupavahiniDetails = async (requestID) => {
-  try {
-    const visitRupavahiniDetails = await Visitrupavahini.findOne({ requestID: requestID });
+const getRequestByUsername = async (req, res) => {
+  const username = req.params.username;
 
-    if (!visitRupavahiniDetails) {
-      // If no document found
-      return null;
+  try {
+    const requests = await Visitrupavahini.find({ username: username });
+
+    if (!requests || requests.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No requests found for the username", username: username });
     }
 
-    return visitRupavahiniDetails;
+    res.status(200).json(requests);
+
   } catch (error) {
-    // Handle errors (e.g., log the error or throw it).
-    console.error("Error retrieving visit request details", error);
-    throw error;
+    console.error("Error retrieving requests by username", error);
+    res.status(500).json({ error: "Could not retrieve requests by username" });
   }
 };
 
@@ -132,23 +135,23 @@ const getVisitrupavahiniDetails = async (requestID) => {
   }
 };*/
 
-const getRequestByUsername = async (req, res) => {
-  const username = req.params.username;
+const getVisitrupavahiniDetails = async (req, res) => {
+  const reqid = req.params.requestID;
 
   try {
-    const requests = await Visitrupavahini.find({ username: username });
+    const requests = await Visitrupavahini.findOne({ id :reqid });
 
     if (!requests || requests.length === 0) {
       return res
         .status(404)
-        .json({ message: "No requests found for the username", username: username });
+        .json({ message: "No requests found for the id", id : reqid });
     }
 
     res.status(200).json(requests);
 
   } catch (error) {
-    console.error("Error retrieving requests by username", error);
-    res.status(500).json({ error: "Could not retrieve requests by username" });
+    console.error("Error retrieving requests by ID", error);
+    res.status(500).json({ error: "Could not retrieve requests by ID" });
   }
 };
 
