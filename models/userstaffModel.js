@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userstaffSchema = new Schema({
-    empId:{
+    empID:{
         type: String,
         required: true,
         unique: true,
@@ -43,4 +43,8 @@ const userstaffSchema = new Schema({
     
     });
 
-    module.exports = mongoose.model('Userstaff', userstaffSchema);
+    //module.exports = mongoose.model('Userstaff', userstaffSchema);
+
+    const UserStaff = mongoose.model('Userstaff', userstaffSchema);
+
+    module.exports = UserStaff;
