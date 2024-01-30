@@ -33,7 +33,7 @@ const createappointmentrequest = async (req, res) => {
   }
 };
 
-c/*onst getAppRequestByUsername = async (req, res) => {
+/*const getAppRequestByUsername = async (req, res) => {
     const username = req.params.username;
   
     try {
