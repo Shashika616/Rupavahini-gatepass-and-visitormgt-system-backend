@@ -7,7 +7,15 @@ const Routes = require("./routes/routeStaffFetch")
 const Routes2 = require("./routes/routeStaffLogin")
 const Routes3 = require("./routes/routeUserFetch")
 const Routes4 = require("./routes/routeUserLogin")
+const Routes5 = require("./routes/routestaff")
+const Routes6 = require("./routes/routeuser")
+const Routes7 = require("./routes/routeAppointmentReq")
+const Routes8 = require("./routes/routeVisitRupavahiniReq")
+const Routes9 = require("./routes/routeStaffReq")
+const Routes10 = require("./routes/routeStaffComplaint")
+
 const mongoose = require("mongoose");
+
 const cors = require("cors");
 
 
@@ -17,6 +25,13 @@ app.use(Routes);
 app.use(Routes2);
 app.use(Routes3);
 app.use(Routes4);
+app.use(Routes5);
+app.use(Routes6);
+app.use(Routes7);
+app.use(Routes8);
+app.use(Routes9);
+app.use(Routes10);
+
 
 /* 
     app.use(
