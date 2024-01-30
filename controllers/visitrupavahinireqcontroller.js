@@ -1,10 +1,14 @@
 const Visitrupavahini = require("../models/visitrupavahiniModel");
 
+/*let currentRequestID; // To store the current requestID
+
 const createvisitrupavahinirequest = async (req, res) => {
     const username = req.params.username;
     const {category, dateofArrival, timeslot} = req.body;
     // Create a unique ID to identify the request in seperate forms and update the relevant fields
     const requestID = `${category}-${username}-${dateofArrival}-${timeslot}`;  
+    currentRequestID = requestID;
+
   const {
     name,
     grade,
@@ -47,7 +51,9 @@ const createvisitrupavahinirequest = async (req, res) => {
 };
 
 const updatevisitrupavhini = async (req, res) => {
-    const requestID = req.params.id;
+    const reqID = currentRequestID;
+    return res.json({message : "req ID", reqID : reqID });
+    
     const {
         name,
         grade,
@@ -63,7 +69,7 @@ const updatevisitrupavhini = async (req, res) => {
   
     try {
       const updatevisitrupavhinirequest = await Visitrupavahini.findOneAndUpdate(
-        { _id : requestID },
+        { requestID: reqID },
         {
           $set: {
             name,
@@ -84,7 +90,62 @@ const updatevisitrupavhini = async (req, res) => {
       if (!updatevisitrupavhinirequest) {
         return res
           .status(404)
-          .json({ message: "RequestID  Not found", requestID: requestID });
+          .json({ message: "RequestID  Not found", requestID: reqID });
+      }
+  
+      res.status(200).json(updatevisitrupavhinirequest);
+    } catch (error) {
+      console.error("Error updating visit rupavahini request details", error);
+      res.status(500).json({ error: "Could not update request details" });
+    }
+  }; */ 
+
+
+
+
+  const createRequestID = (req, res, next) => {
+    const username = req.params.username;
+    const { category, dateofArrival, timeslot, note } = req.body;
+    // Create a unique ID to identify the request in separate forms and update the relevant fields
+    req.requestID = `${category}-${username}-${dateofArrival}-${timeslot}`;
+    next();
+  };
+  
+  const createvisitrupavahinirequest = async (req, res) => {
+    try {
+      const visitrupavahini = await Visitrupavahini.create(req.body);
+      res.status(201).json(visitrupavahini);
+    } catch (error) {
+      console.error("Error creating a request", error);
+      res.status(500).json({ error: "Could not create a visit Rupavahini Request" });
+    }
+  };
+  
+  const updatevisitrupavhini = async (req, res) => {
+    try {
+      const updatevisitrupavhinirequest = await Visitrupavahini.findOneAndUpdate(
+        { requestID: req.requestID },
+        {
+          $set: {
+            name: req.body.name,
+            grade: req.body.grade,
+            address: req.body.address,
+            authorizedPerson: req.body.authorizedPerson,
+            designation: req.body.designation,
+            phoneNo: req.body.phoneNo,
+            noOfmale: req.body.noOfmale,
+            noOffemale: req.body.noOffemale,
+            noOfteachers: req.body.noOfteachers,
+            noOfparents: req.body.noOfparents,
+          },
+        },
+        { new: true }
+      );
+  
+      if (!updatevisitrupavhinirequest) {
+        return res
+          .status(404)
+          .json({ message: "RequestID  Not found", requestID: req.requestID });
       }
   
       res.status(200).json(updatevisitrupavhinirequest);
@@ -93,6 +154,8 @@ const updatevisitrupavhini = async (req, res) => {
       res.status(500).json({ error: "Could not update request details" });
     }
   };
+  
+
 
 // Method to retrieve visit request details by requestID
 const getRequestByUsername = async (req, res) => {
@@ -182,6 +245,7 @@ const deleteRequest = async (req, res) => {
 
 
 module.exports = {
+  createRequestID,
   createvisitrupavahinirequest,
   updatevisitrupavhini,
   getVisitrupavahiniDetails,
