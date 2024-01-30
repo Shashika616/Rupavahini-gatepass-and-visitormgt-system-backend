@@ -7,8 +7,8 @@ const {
     deleteAppRequest,
 } = require("../controllers/appointmentreqcontroller");
 
-router.post("/", createappointmentrequest);
-router.get("/:username", getAppRequestByUsername);
-router.delete("/:id", deleteAppRequest);
+router.post("/createappoinment/:username", createappointmentrequest);
+router.get("/appointmentreq/:username", getAppRequestByUsername);
+router.delete("/deleteappoinment/:id", deleteAppRequest);
 
 module.exports = router;
