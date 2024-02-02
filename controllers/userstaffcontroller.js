@@ -17,7 +17,7 @@ const userstaffRegister = async(req,res)=>{
     try {
         
            // EmployeeID format check
-        const empIDformat = /^\d{8}$/;
+        const empIDformat = /^\d{5,}$/;
         if(!empIDformat.test(empID)){
             console.log("Invalid format for a Employee Number");
             return res.json({error: 'Invalid Employee Number'});
