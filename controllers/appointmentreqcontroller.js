@@ -72,6 +72,23 @@ const createappointmentrequest = async (req, res) => {
       res.status(500).json({ error: "Could not retrieve requests by username" });
     }
   };
+
+  const getAppRequests = async (req, res) => {
+    try {
+        const requests = await Appointment.find();
+  
+        if (!requests || requests.length === 0) {
+            return res.status(404).json({ message: "No appointment requests found" });
+        }
+  
+        res.status(200).json(requests);
+  
+    } catch (error) {
+        console.error("Error retrieving appointment requests", error);
+        res.status(500).json({ error: "Could not retrieve appointment requests" });
+    }
+};
+
   
 
   const deleteAppRequest = async (req, res) => {
@@ -95,5 +112,6 @@ const createappointmentrequest = async (req, res) => {
   module.exports = {
     createappointmentrequest,
     getAppRequestByUsername,
+    getAppRequests,
     deleteAppRequest,
   };
