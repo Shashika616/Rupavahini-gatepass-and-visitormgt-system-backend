@@ -157,7 +157,7 @@ const updatevisitrupavhini = async (req, res) => {
   
 
 
-// Method to retrieve visit request details by requestID
+// Method to retrieve visit request details by username
 const getRequestByUsername = async (req, res) => {
   const username = req.params.username;
 
@@ -219,6 +219,23 @@ const getVisitrupavahiniDetails = async (req, res) => {
 };
 
 
+const getAllVisitrupavahiniDetails = async (req, res) => {
+  try {
+      const requests = await Visitrupavahini.find();
+
+      if (!requests || requests.length === 0) {
+          return res.status(404).json({ message: "No requests found" });
+      }
+
+      res.status(200).json(requests);
+
+  } catch (error) {
+      console.error("Error retrieving all requests", error);
+      res.status(500).json({ error: "Could not retrieve all requests" });
+  }
+};
+
+
 
 
 const deleteRequest = async (req, res) => {
@@ -250,5 +267,6 @@ module.exports = {
   updatevisitrupavhini,
   getVisitrupavahiniDetails,
   getRequestByUsername,
+  getAllVisitrupavahiniDetails,
   deleteRequest,
 };
