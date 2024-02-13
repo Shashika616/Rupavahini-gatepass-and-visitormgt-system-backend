@@ -24,7 +24,7 @@ const staffgateSchema = new Schema({
     },
     position: {
         type: String,
-        required: true,
+        
     },
 });
 
