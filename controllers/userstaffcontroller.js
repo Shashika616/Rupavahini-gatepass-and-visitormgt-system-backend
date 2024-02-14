@@ -87,7 +87,7 @@ const userstaffRegister = async(req,res)=>{
 
             
 
-        res.send({status:"ok"}) 
+        res.status(200).send({ status: "ok" });
         }catch (error) {
             res.send({status:"error"})
             console.log(error);
