@@ -10,8 +10,7 @@ const userstaffSchema = new Schema({
 
     username: {
      type: String,
-     required: true,
-     unique: true,   
+     
     },
     
    
@@ -24,7 +23,7 @@ const userstaffSchema = new Schema({
     contactNo:{
      type: [String],
      required: true,
-     unique: true,
+   
     },
 
     division:{
