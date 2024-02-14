@@ -23,6 +23,11 @@ const userstaffRegister = async(req,res)=>{
             return res.json({error: 'Invalid Employee Number'});
         }
 
+        const usedempID = await UserStaff.findOne({empID});
+        if(usedempID){
+            return res.json({error:"This empoyee ID is already being used try a different one"});
+        }
+
             // Fullname format check
         if (!username || username.trim() === "") {
             console.log("Enter Your Full Name here");
