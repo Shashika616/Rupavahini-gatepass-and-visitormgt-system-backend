@@ -5,7 +5,7 @@ const userstaffSchema = new Schema({
     empID:{
         type: String,
         required: true,
-        //unique: true,
+        unique: true,
     },
 
     username: {
