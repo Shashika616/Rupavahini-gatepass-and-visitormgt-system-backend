@@ -70,7 +70,7 @@ const userRegister = async(req,res)=>{
             password:encryptedPassword,
         });
 
-        res.send({status:"ok"}) 
+        res.status(200).send({ status: "ok" }); 
         }catch (error) {
             res.send({status:"error"})
         }
