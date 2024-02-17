@@ -68,7 +68,7 @@ const UsersData = async (req, res) => {
 */
 
 const GetUsersData = async (req, res) => {
-  const empID = req.params.username;  // Assuming username is passed as a route parameter
+  const username = req.params.username;  // Assuming username is passed as a route parameter
 
   try {
       const userData = await User.findOne({ username });
