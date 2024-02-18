@@ -6,5 +6,6 @@ const staffData = require("../controllers/fetchstaffdatacontroller");
 
 router.post("/StaffData",staffData.StaffData);
 router.get("/staff/:empID",staffData.GetStaffData);
+router.post("/staffdataheader",staffData.StaffDatafromheader);
 
 module.exports = router;
