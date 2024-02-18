@@ -6,5 +6,6 @@ const UserData = require("../controllers/fetchuserdatacontroller");
 
 router.post("/userData",UserData.UsersData);
 router.get("/requser/:username",UserData.GetUsersData);
+router.post("/userdataheader",UserData.UsersDatafromheader);
 
 module.exports = router;
