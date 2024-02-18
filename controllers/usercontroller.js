@@ -10,6 +10,8 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const NODEMAILER_USER = process.env.NODEMAILER_USER;
 const NODEMAILER_PASSWORD = process.env.NODEMAILER_PASSWORD;
 const RECEIVER_EMAIL = process.env.RECEIVER_EMAIL;
+const fs = require('fs');
+const path = require('path');
 
 const userRegister = async(req,res)=>{
     const {username,fullname,email,contactNo,password,confirmpwd}= req.body;
@@ -76,4 +78,52 @@ const userRegister = async(req,res)=>{
         }
     };
 
-    exports.userRegister = userRegister;
+    
+
+const updateUser = async (req, res) => {
+    const { username } = req.params; // Extract username from URL params
+    const { fullname, email, contactNo } = req.body; // Extract updated user details from request body
+
+    try {
+        // Find the user by username
+        let user = await User.findOne({ username });
+
+        // If user doesn't exist, return error
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Update user details
+        if (fullname) user.fullname = fullname;
+        if (email) user.email = email;
+        if (contactNo) user.contactNo = contactNo;
+
+        // Handle image upload if provided
+        if (req.file) {
+            const uploadedImagePath = path.join(__dirname, '../uploads', req.file.filename);
+
+            // Move the uploaded image to local storage
+            fs.renameSync(req.file.path, uploadedImagePath);
+
+            // Construct the image URL
+            const imageRelativePath = `uploads/${req.file.filename}`;
+            user.image = imageRelativePath;
+        }
+
+        // Save the updated user
+        await user.save();
+
+        res.status(200).json({ status: 'ok', data: user });
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+module.exports = { 
+    updateUser,
+    userRegister,
+};
+
+
+    
