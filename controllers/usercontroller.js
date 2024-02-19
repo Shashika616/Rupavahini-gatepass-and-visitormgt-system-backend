@@ -12,6 +12,18 @@ const NODEMAILER_PASSWORD = process.env.NODEMAILER_PASSWORD;
 const RECEIVER_EMAIL = process.env.RECEIVER_EMAIL;
 const fs = require('fs');
 const path = require('path');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, '../uploads/');
+    },
+    filename: function (req, file, cb) {
+      cb(null, new Date().toISOString() + file.originalname);
+    }
+  });
+  
+  const upload = multer({ storage: storage });
 
 const userRegister = async(req,res)=>{
     const {username,fullname,email,contactNo,password,confirmpwd}= req.body;
@@ -80,7 +92,8 @@ const userRegister = async(req,res)=>{
 
     
 
-const updateUser = async (req, res) => {
+    const updateUser = async (req, res) => {
+    console.log(req.body);
     const { username } = req.params; // Extract username from URL params
     const { fullname, email, contactNo } = req.body; // Extract updated user details from request body
 
