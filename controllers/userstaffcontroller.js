@@ -13,6 +13,20 @@ const RECEIVER_EMAIL = process.env.RECEIVER_EMAIL;
 const fs = require('fs');
 const path = require('path');
 
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, '../uploads/');
+    },
+    filename: function (req, file, cb) {
+      cb(null, new Date().toISOString() + file.originalname);
+    }
+  });
+  
+  const upload = multer({ storage: storage });
+
+
 const userstaffRegister = async(req,res)=>{
     const {empID,username,email,contactNo,division,password,confirmpwd}= req.body;
     
@@ -103,8 +117,9 @@ const userstaffRegister = async(req,res)=>{
 
 
 const updateStaff = async (req, res) => {
+    console.log(req.body);
     const { empID } = req.params; // Extract empID from URL params
-    const { username, fullname, email, contactNo } = req.body; // Extract updated user details from request body
+    const { username, division, email, contactNo } = req.body; // Extract updated user details from request body
 
     try {
         // Find the user by empID
@@ -117,7 +132,7 @@ const updateStaff = async (req, res) => {
 
         // Update user details
         if (username) user.username = username; // Update username if provided
-        if (fullname) user.fullname = fullname;
+        if (division) user.division = division;
         if (email) user.email = email;
         if (contactNo) user.contactNo = contactNo;
 
