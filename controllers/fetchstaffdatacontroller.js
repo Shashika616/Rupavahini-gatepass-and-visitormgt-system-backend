@@ -104,7 +104,7 @@ const StaffDatafromheader = async (req, res) => {
       const empID = user.empID; // Assuming the empID is stored in the JWT payload
 
       try {
-          const userData = await UserStaff.findOne({ empID });
+          const userData = await Userstaff.findOne({ empID });
 
           if (userData) {
               res.json({ status: "ok", data: userData });
