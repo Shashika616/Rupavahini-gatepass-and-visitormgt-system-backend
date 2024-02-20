@@ -37,7 +37,7 @@ const userstaffSchema = new Schema({
      },
 
     image:{
-     type: Buffer,
+     type: String,
     },
     
     });
