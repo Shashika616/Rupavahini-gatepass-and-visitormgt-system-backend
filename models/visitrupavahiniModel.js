@@ -20,6 +20,8 @@ const visitrupavahiniSchema = new Schema({
     dateofArrival:{
      type: Date,
      //required: true,
+     set: dateofArrival => new Date (dateofArrival).toISOString().slice(0, 10)
+
     },
     timeslot:{
      type: String,

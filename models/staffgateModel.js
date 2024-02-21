@@ -6,6 +6,8 @@ const staffgateSchema = new Schema({
         type: Date,
         required: true,
         default: Date.now(),
+        set: currentDate => new Date (currentDate).toISOString().slice(0, 10)
+
     },
     inOut: {    
         type: String,

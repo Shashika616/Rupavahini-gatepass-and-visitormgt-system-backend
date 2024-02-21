@@ -5,6 +5,7 @@ const appointmentgateSchema = new Schema({
     currentDate: {
         type: Date,
         required: true,
+        set: currentDate => new Date (currentDate).toISOString().slice(0, 10)
     },
     inOut: {
         type: String,

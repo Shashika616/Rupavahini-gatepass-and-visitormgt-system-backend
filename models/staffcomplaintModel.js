@@ -14,6 +14,8 @@ const staffcomplaintSchema = new Schema({
     complaintDate:{
         type: Date,
         required: true,
+        set: complaintDate => new Date (complaintDate).toISOString().slice(0, 10)
+
     },
     details:{
         type: String,
