@@ -94,10 +94,67 @@ const getStaffRequestByIDAndToday = async (req, res) => {
   }
 };
 
+const getRequestsByYear = async (req, res) => {
+  const { year } = req.params;
+
+  try {
+      const requests = await StaffReq.find({
+          'currentDate': {
+              $gte: new Date(`${year}-01-01`),
+              $lt: new Date(`${parseInt(year) + 1}-01-01`)
+          }
+      });
+
+      res.status(200).json(requests);
+  } catch (error) {
+      console.error('Error retrieving requests by year:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+const getRequestsByYearAndMonth = async (req, res) => {
+  const { year, month } = req.params;
+
+  try {
+      const requests = await StaffReq.find({
+          'currentDate': {
+              $gte: new Date(`${year}-${month}-01`),
+              $lt: new Date(`${year}-${parseInt(month) + 1}-01`)
+          }
+      });
+
+      res.status(200).json(requests);
+  } catch (error) {
+      console.error('Error retrieving requests by year and month:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+const getRequestsByYearMonthAndDay = async (req, res) => {
+  const { year, month, day } = req.params;
+
+  try {
+      const requests = await StaffReq.find({
+          'currentDate': {
+              $gte: new Date(`${year}-${month}-${day}`),
+              $lt: new Date(`${year}-${month}-${parseInt(day) + 1}`)
+          }
+      });
+
+      res.status(200).json(requests);
+  } catch (error) {
+      console.error('Error retrieving requests by year, month, and day:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 
 module.exports = {
   createStaffRequest,
   getStaffRequestByID,
   getStaffRequestByIDAndDate,
   getStaffRequestByIDAndToday,
+  getRequestsByYear,
+  getRequestsByYearAndMonth,
+  getRequestsByYearMonthAndDay,
 };
