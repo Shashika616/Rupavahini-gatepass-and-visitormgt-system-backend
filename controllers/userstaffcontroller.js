@@ -328,6 +328,7 @@ const updateStaff = async (req, res) => {
 };
 
 const updatePassword = async (req, res) => {
+    console.log(req.body);
     const {empID} = req.params;
     const { oldPassword, newPassword } = req.body;
 

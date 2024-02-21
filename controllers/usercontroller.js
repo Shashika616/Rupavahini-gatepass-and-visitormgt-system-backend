@@ -284,6 +284,7 @@ const userRegister = async(req,res)=>{
 };
 
 const updatePassword = async (req, res) => {
+    console.log(req.body);
     const {username} = req.params;
     const { oldPassword, newPassword } = req.body;
 
