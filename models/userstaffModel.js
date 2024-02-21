@@ -39,6 +39,17 @@ const userstaffSchema = new Schema({
     image:{
      type: String,
     },
+
+    isVerified: {
+        type: Boolean,
+        default: false,
+    },
+    verificationToken: {
+        type: String,
+    },
+    verificationTokenExpires: {
+        type: Date,
+    },
     
     });
 
