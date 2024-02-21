@@ -248,11 +248,6 @@ const userRegister = async(req,res)=>{
         
             }
         
-            const usedEmail = await User.findOne({email});
-            if(usedEmail){
-                return res.json({error:"This Email has already taken by another User"});
-            }
-
                  // Contact number validation
         const contactNoFormat = /^\d{10}$/;
         if(!contactNoFormat.test(contactNo)){
@@ -260,10 +255,6 @@ const userRegister = async(req,res)=>{
             return res.json({error: ' Invalid Mobile Number'});
         }
 
-        const usedcontactNo = await User.findOne({contactNo});
-        if(usedcontactNo){
-            return res.json({error:"This Contact Number has already taken by another User"});
-        }
 
         // Update user details
         if (fullname) user.fullname = fullname;

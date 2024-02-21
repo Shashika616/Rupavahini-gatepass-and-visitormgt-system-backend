@@ -291,22 +291,12 @@ const updateStaff = async (req, res) => {
                 console.log("Not a valid Email");
                 return res.send({error:'Invalid Email check again'});    
             }
-    
-            const usedEmail = await UserStaff.findOne({email});
-            if(usedEmail){
-                return res.json({error:"This Email has already taken by another User"});
-            }
 
                  // Contact number format check
             const contactNoFormat = /^\d{10}$/;
             if(!contactNoFormat.test(contactNo)){
                 console.log("Invalid format for a mobile Number");
                 return res.json({error: 'Enter Invalid Mobile Number'});
-            }
-
-            const usedcontactNo = await UserStaff.findOne({contactNo});
-            if(usedcontactNo){
-                return res.json({error:"This Contact Number has already taken by another User"});
             }
 
         // Update user details
