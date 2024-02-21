@@ -130,6 +130,29 @@ const updateStaff = async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
 
+             // Email Validation
+             if(!emailValidator.validate(email)){
+                console.log("Not a valid Email");
+                return res.send({error:'Invalid Email check again'});    
+            }
+    
+            const usedEmail = await UserStaff.findOne({email});
+            if(usedEmail){
+                return res.json({error:"This Email has already taken by another User"});
+            }
+
+                 // Contact number format check
+            const contactNoFormat = /^\d{10}$/;
+            if(!contactNoFormat.test(contactNo)){
+                console.log("Invalid format for a mobile Number");
+                return res.json({error: 'Enter Invalid Mobile Number'});
+            }
+
+            const usedcontactNo = await UserStaff.findOne({contactNo});
+            if(usedcontactNo){
+                return res.json({error:"This Contact Number has already taken by another User"});
+            }
+
         // Update user details
         if (username) user.username = username; // Update username if provided
         if (division) user.division = division;
@@ -158,9 +181,43 @@ const updateStaff = async (req, res) => {
     }
 };
 
+const updatePassword = async (req, res) => {
+    const {empID} = req.params;
+    const { oldPassword, newPassword } = req.body;
+
+    try {
+        // Find the user by empID
+        const userstaff = await UserStaff.findOne({ empID });
+
+        // If user doesn't exist, return error
+        if (!userstaff) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Check if the old password matches
+        const isPasswordMatch = await bcrypt.compare(oldPassword, userstaff.password);
+        if (!isPasswordMatch) {
+            return res.status(401).json({ error: 'Old password is incorrect' });
+        }
+
+        // Encrypt the new password
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        // Update user's password
+        userstaff.password = hashedPassword;
+        await userstaff.save();
+
+        res.status(200).json({ message: 'Password updated successfully' });
+    } catch (error) {
+        console.error('Error updating password:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
 module.exports = { 
     updateStaff,
     userstaffRegister,
+    updatePassword,
 };
 
 
