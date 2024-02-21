@@ -30,7 +30,9 @@ const appoinmentSchema = new Schema({
     appoinmentDate:{
         type: Date,
         required: true,
+        set: appoinmentDate => new Date (appoinmentDate).toISOString().slice(0, 10)
     },
+
     appoinmentTime:{
         type: String,
         required: true,
