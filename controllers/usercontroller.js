@@ -217,7 +217,14 @@ const userRegister = async(req,res)=>{
             }
     
             if (user.verificationToken !== verificationToken || user.verificationTokenExpires < Date.now()) {
-                return res.status(400).json({ message: 'Invalid or expired verification token' });
+                // Token is invalid or expired
+                // You can choose to delete the user if the token has expired
+                if (user.verificationTokenExpires < Date.now()) {
+                    await User.deleteOne({ email }); // Delete the user record
+                    return res.status(400).json({ message: 'Verification token expired. User record deleted.  Please sign up again' });
+                } else {
+                    return res.status(400).json({ message: 'Invalid or expired verification token. Please sign up again.' });
+                }
             }
     
             user.isVerified = true;
@@ -265,7 +272,6 @@ const userRegister = async(req,res)=>{
 
         // Update user details
         if (fullname) user.fullname = fullname;
-        if (email) user.email = email;
         if (contactNo) user.contactNo = contactNo;
 
         // Handle image upload if provided
@@ -280,8 +286,35 @@ const userRegister = async(req,res)=>{
             user.image = imageRelativePath;
         }
 
+        // Handle email updates
+        if (email) {
+            user.email = email;
+
+           // Generate verification token
+         const verificationToken = Math.floor(100000 + Math.random() * 900000);
+         user.verificationToken = verificationToken;
+         user.verificationTokenExpires = Date.now() + 3600000; // 1 hour 
+
+         user.isVerified = false; // Mark the new email as unverified
+
+               // Send verification email
+        try {
+            await transporter.sendMail({
+                from: NODEMAILER_USER,
+                to: email,
+                subject: 'Email Verification',
+                text: `Please enter the following verification code on the on your verification page: ${verificationToken}`,
+            });
+            res.status(201).json({ message: 'User updated successfully. Please verify your email if not the previous email will stay the same' });
+            } catch (error) {
+                console.error('Error sending verification email:', error);
+                res.status(500).json({ message: 'Error sending verification email' });
+            }
+
+        }
+
         // Save the updated user
-        await user.save();
+        await user.save();      
 
         res.status(200).json({ status: 'ok', data: user });
     } catch (error) {
@@ -289,6 +322,52 @@ const userRegister = async(req,res)=>{
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
+const verifyEmailwhenupdate = async (req, res) => {
+    try {
+        const { email, verificationToken } = req.body;
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (user.isVerified) {
+            return res.status(400).json({ message: 'Email already verified' });
+        }
+
+        if (user.verificationToken !== verificationToken || user.verificationTokenExpires < Date.now()) {
+            // Token is invalid or expired
+            if (user.verificationTokenExpires < Date.now()) {
+                // Verification token expired, restore the previous email
+                const previousEmail = user.previous().email; // Assuming you have enabled versioning in your Mongoose schema
+                user.email = previousEmail;
+                user.verificationToken = null;
+                user.verificationTokenExpires = null;
+                await user.save();
+                return res.status(400).json({ message: 'Verification token expired. Email reverted to previous value.' });
+            } else {
+                return res.status(400).json({ message: 'Invalid or expired verification token. Please Enter a valid email and try again.' });
+            }
+        }
+
+        // Mark the email as verified and remove verification token
+        user.isVerified = true;
+        user.verificationToken = null;
+        user.verificationTokenExpires = null;
+
+        // Save the updated user with verified email
+        await user.save();
+
+        res.status(200).json({ message: 'Email verified successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+
+
 
 const updatePassword = async (req, res) => {
     console.log(req.body);
@@ -325,11 +404,14 @@ const updatePassword = async (req, res) => {
 };
 
 
+
+
 module.exports = { 
     updateUser,
     userRegister,
     signup,
     verifyEmail,
+    verifyEmailwhenupdate,
     updatePassword,
 };
 
