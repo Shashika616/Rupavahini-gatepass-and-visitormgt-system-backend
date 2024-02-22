@@ -182,18 +182,23 @@ const userRegister = async(req,res)=>{
             await newUser.save();
     
             // Send verification email
+        try {
             await transporter.sendMail({
                 from: NODEMAILER_USER,
                 to: email,
                 subject: 'Email Verification',
                 text: `Please enter the following verification code on the sign-up page: ${verificationToken}`,
             });
-    
             res.status(201).json({ message: 'User created successfully. Please verify your email.' });
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Internal server error' });
+            console.error('Error sending verification email:', error);
+            res.status(500).json({ message: 'Error sending verification email' });
         }
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
     };
     
     const verifyEmail = async (req, res) => {
