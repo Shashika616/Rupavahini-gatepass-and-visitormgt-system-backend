@@ -36,7 +36,8 @@ const storage = multer.diskStorage({
     },
     tls: {
         rejectUnauthorized: false // for localhost testing purpose only
-    }
+    },
+    debug: true // Enable SMTP debugging
 });
 
 
