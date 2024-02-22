@@ -216,7 +216,14 @@ const userRegister = async(req,res)=>{
             }
     
             if (user.verificationToken !== verificationToken || user.verificationTokenExpires < Date.now()) {
-                return res.status(400).json({ message: 'Invalid or expired verification token' });
+                // Token is invalid or expired
+                // You can choose to delete the user if the token has expired
+                if (user.verificationTokenExpires < Date.now()) {
+                    await User.deleteOne({ email }); // Delete the user record
+                    return res.status(400).json({ message: 'Verification token expired. User record deleted.  Please sign up again' });
+                } else {
+                    return res.status(400).json({ message: 'Invalid or expired verification token. Please sign up again.' });
+                }
             }
     
             user.isVerified = true;
