@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const mongooseVersion = require('mongoose-version-plugin');
 
 const userSchema = new Schema({
    username: {
@@ -39,9 +40,12 @@ const userSchema = new Schema({
   },
   verificationTokenExpires: {
       type: Date,
-  },
+  }, 
 
-});
+}, { timestamps: true });
+
+// Enable versioning plugin
+userSchema.plugin(mongooseVersion, { collection: 'user_versions' });
 
 //module.exports = mongoose.model('User', userSchema);
 
