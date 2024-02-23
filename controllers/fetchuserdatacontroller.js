@@ -101,20 +101,28 @@ const UsersDatafromheader = async (req, res) => {
       const user = jwt.verify(token, JWT_SECRET);
 
       // If the token is valid, proceed to fetch user data
-      const username = user.username; // Assuming the username is stored in the JWT payload
+      //const username = user.username; // Assuming the username is stored in the JWT payload
 
-      try {
-          const userData = await User.findOne({ username });
+      // If the token is valid, proceed to fetch user data
+      let userData;
 
-          if (userData) {
-              res.json({ status: "ok", data: userData });
-          } else {
-              res.status(404).json({ status: "error", data: "User not found" });
-          }
-      } catch (error) {
-          console.error("Error fetching user data:", error);
-          res.status(500).json({ status: "error", data: "Internal Server Error" });
-      }
+      if (user.username) {
+          // If username exists, use it to fetch user data
+          userData = await User.findOne({ username: user.username });
+      } else if (user.email) {
+          // If email exists, use it to fetch user data
+          userData = await User.findOne({ email: user.email });
+      } else {
+        // Neither username nor email exists in the decoded JWT payload
+        return res.status(400).json({ status: "error", data: "No identifier found in JWT payload" });
+    }
+
+      if (userData) {
+        res.json({ status: "ok", data: userData });
+    } else {
+        res.status(404).json({ status: "error", data: "User not found" });
+    }
+
   } catch (error) {
       if (error.name === "TokenExpiredError") {
           res.status(401).json({ status: "error", data: "Token expired" });
