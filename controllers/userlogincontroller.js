@@ -12,11 +12,17 @@ const NODEMAILER_PASSWORD = process.env.NODEMAILER_PASSWORD;
 const RECEIVER_EMAIL = process.env.RECEIVER_EMAIL;
 
 const LoginUser = async (req, res) => {
-    const { username, password } = req.body;
+    const { usernameOrEmail, password } = req.body;
   
     try {
-      // Find the user with the provided username
-      const user = await User.findOne({ username });
+      
+      // Find the user by username or email
+      const user = await User.findOne({
+        $or: [
+            { username: usernameOrEmail },
+            { email: usernameOrEmail }
+        ]
+    });
   
       if (!user) {
         return res.json({ error: "User not found" });
