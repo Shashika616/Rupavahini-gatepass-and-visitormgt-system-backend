@@ -21,6 +21,10 @@ const LoginStaff = async (req, res) => {
       if (!user) {
         return res.json({ error: "User not found" });
       }
+       // Check if the user's email is verified
+    if (!user.isVerified) {
+      return res.json({ error: "Please verify your email before logging in" });
+    }
   
       // Compare the provided password with the hashed password in the database
       if (await bcrypt.compare(password, user.password)) {
