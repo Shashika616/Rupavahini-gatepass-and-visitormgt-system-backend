@@ -212,7 +212,6 @@ const userstaffRegister = async(req,res)=>{
             const newUser = new UserStaff({
                 empID,
                 username,
-                fullname,
                 email,
                 contactNo,
                 division,
