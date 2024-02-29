@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const User = require("../models/userModel");
 const bcrypt = require('bcryptjs');  // Hash Library for password
 const jwt = require('jsonwebtoken');

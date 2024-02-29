@@ -14,6 +14,7 @@ const Routes7 = require("./routes/routeAppointmentReq")
 const Routes8 = require("./routes/routeVisitRupavahiniReq")
 const Routes9 = require("./routes/routeStaffReq")
 const Routes10 = require("./routes/routeStaffComplaint")
+const Routes11 = require("./routes/routeforgotpassword")
 
 const mongoose = require("mongoose");
 
@@ -32,7 +33,7 @@ app.use(Routes7);
 app.use(Routes8);
 app.use(Routes9);
 app.use(Routes10);
-
+app.use(Routes11);
 
 /* 
     app.use(
